@@ -1,0 +1,17 @@
+<resources>
+
+    <string name="app_name">Cloud Engine Light</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Cloud Engine Light</string>
+      <string-array name="menu_links">
+        <item >http://openshift.redhat.com/app/status</item>
+        <item >https://mobile.twitter.com/openshift/</item>
+        <item >https://mobile.twitter.com/search/%23openshift</item>
+        <item >https://mobile.twitter.com/openshift_ops</item>
+        <item >https://plus.google.com/108052331678796731786/posts</item>
+        <item >http://openshift.redhat.com/community</item>
+        <item >http://www.facebook.com/openshift</item>
+    </string-array>
+    
+</resources>
