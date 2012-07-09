@@ -26,14 +26,7 @@ public class MainActivityWeb extends Activity {
 	}
 
 	public class MyWebViewClient extends WebViewClient {
-		/*
-		 * (non-Java doc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#shouldOverrideUrlLoading(android.webkit
-		 * .WebView, java.lang.String)
-		 */
-
+		
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (url.endsWith(".mp4")) {
