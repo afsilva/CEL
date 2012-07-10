@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,15 +18,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-@TargetApi(9)
 public class MainActivity extends ListActivity {
 
 	ArrayAdapter<String> adapter;
 
 	// Menu items
-	private String[] items = { "", "   ---> tap to refresh", "", " @openshift",
-			" #openshift", " @openshift_ops", " +openshift", " community",
-	" openshift@facebook" };
+	private String[] items = { "", "   ---> tap to refresh", "",
+			" openshift.redhat.com", " community", "", " @openshift",
+			" #openshift", " @openshift_ops", " +openshift",
+			" openshift@facebook" };
+
+	// Menu Links
+	private String[] links = { "", "", "", "https://openshift.redhat.com/",
+			"http://openshift.redhat.com/community", "",
+			"https://mobile.twitter.com/openshift/",
+			"https://mobile.twitter.com/search/%23openshift",
+			"https://mobile.twitter.com/openshift_ops",
+			"https://plus.google.com/108052331678796731786/posts",
+			"http://www.facebook.com/openshift" };
 
 	ListView lv = null;
 
@@ -38,11 +46,11 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		// The next two lines are used to I can make the https call on
-		// checkCloudLight
-		// on the main application thread. Not the best solution, but it will do
-		// for now.
+		// checkCloudLight on the main application thread. Not the best
+		// solution, but it will do for now.
+
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-		.permitAll().build();
+				.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 
 		// Here's where we get the current status of our Cloud service
@@ -51,33 +59,34 @@ public class MainActivity extends ListActivity {
 		adapter = new ArrayAdapter<String>(this, R.layout.activity_main, items);
 		this.setListAdapter(adapter);
 
-		final String[] links = getResources()
-				.getStringArray(R.array.menu_links);
-
 		lv = getListView();
 		setListViewBackgroundColor(lv, items[0]);
 		lv.setOnItemClickListener(new OnItemClickListener() {
-	
+
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
+
 				// if the 'refresh' button is clicked
 				if (position == 1) {
 
 					checkCloudLight();
 					adapter.notifyDataSetChanged();
 					setListViewBackgroundColor(lv, items[0]);
-                // if 'empty' button is clicked do nothing
-				} else if (position == 2) {
+
+					// if 'empty' button is clicked do nothing
+				} else if (position == 2 || position == 5) {
 					// do nothing on the third link
 				} else {
 					String content = null;
 					// if first button with status of site is clicked
 					if (position == 0) {
+
 						content = status_url;
 					} else {
-						// moving offset to match with the 3 extra items i have on item[] array
-						content = links[position - 3];
+
+						// moving offset to match with the 3 extra items i have
+						// on item[] array
+						content = links[position];
 					}
 					Intent showContent = new Intent(getApplicationContext(),
 							MainActivityWeb.class);
@@ -133,7 +142,7 @@ public class MainActivity extends ListActivity {
 		if (appStatus == null) {
 			items[0] = " Couldn't load status\n -Check network ";
 		} else {
-			items[0] = " "+appStatus;
+			items[0] = " " + appStatus;
 		}
 	}
 
