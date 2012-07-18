@@ -147,6 +147,12 @@ public class MainActivity extends Activity {
 		if (appStatus == null) {
 			items[0] = " Couldn't load status\n -Check network ";
 		} else {
+			
+			if (appStatus.endsWith("(1)")) 
+				appStatus = appStatus + " Issue";
+			else if (!appStatus.endsWith("(OK)"))
+				appStatus = appStatus + " Issues";
+			
 			items[0] = " " + appStatus;
 		}
 	}

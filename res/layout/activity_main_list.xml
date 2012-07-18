@@ -8,7 +8,7 @@
     android:shadowDx="1"
     android:shadowDy="1"
     android:shadowRadius="1.5"
-    android:textSize="28sp"
+    android:textSize="26sp"
     android1:textColor="#ffffff"
     tools:context=".MainActivity" >
 </TextView>
