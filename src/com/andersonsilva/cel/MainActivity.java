@@ -1,13 +1,14 @@
 package com.andersonsilva.cel;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.net.ssl.HttpsURLConnection;
-
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,12 +24,15 @@ import android.widget.ListView;
 public class MainActivity extends Activity {
 
 	ArrayAdapter<String> adapter;
+	private JSONObject jObject;
+	JSONArray openIssues = null;
+	JSONArray resolvedIssues = null;
 
 	// Menu items
 	private String[] items = { "", "   ---> tap to refresh", "",
 			" openshift.redhat.com", " community", "", " @openshift",
 			" #openshift", " @openshift_ops", " +openshift",
-			" openshift@facebook" };
+	" openshift@facebook" };
 
 	// Menu Links
 	private String[] links = { "", "", "", "https://openshift.redhat.com/",
@@ -37,11 +41,14 @@ public class MainActivity extends Activity {
 			"https://mobile.twitter.com/search/%23openshift",
 			"https://mobile.twitter.com/openshift_ops",
 			"https://plus.google.com/108052331678796731786/posts",
-			"http://www.facebook.com/openshift" };
+	"http://www.facebook.com/openshift" };
 
 	ListView lv = null;
 
-	String status_url = "https://openshift.redhat.com/app/status";
+	String go_url = "https://openshift.redhat.com/app/status";
+	String status_url = "https://openshift.redhat.com/app/status/status.json";
+	// Test URL
+	//String status_url = "https://people.redhat.com/~ansilva/status.json";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +62,7 @@ public class MainActivity extends Activity {
 		// solution, but it will do for now.
 
 		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
+		.permitAll().build();
 		StrictMode.setThreadPolicy(policy);
 
 		// Here's where we get the current status of our Cloud service
@@ -86,7 +93,7 @@ public class MainActivity extends Activity {
 					// if first button with status of site is clicked
 					if (position == 0) {
 
-						content = status_url;
+						content = go_url;
 					} else {
 
 						// moving offset to match with the 3 extra items i have
@@ -116,45 +123,79 @@ public class MainActivity extends Activity {
 
 	}
 
+	//json parser
+	public String getJSON() {
+		try {
+			URL url = new URL(status_url);
+			HttpsURLConnection c = (HttpsURLConnection) url.openConnection();
+			c.setRequestMethod("GET");
+			c.setRequestProperty("Content-length", "0");
+			c.setUseCaches(false);
+			c.setAllowUserInteraction(false);
+			c.connect();
+			int status = c.getResponseCode();
+
+			switch (status) {
+			case 200:
+			case 201:
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						c.getInputStream()));
+				StringBuilder sb = new StringBuilder();
+				String line;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				br.close();
+				return sb.toString();
+			}
+
+		} catch (MalformedURLException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 	// this is the method that checks against Cloud service URL
 	// and strips the TITLE tag.
 	public void checkCloudLight() {
 
-		String html = "", tmp = "";
-
-		try {
-			URL url = new URL(status_url);
-			HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-			DataInputStream dis;
-			dis = new DataInputStream(con.getInputStream());
-			while ((tmp = dis.readUTF()) != null) {
-				html += " " + tmp;
-			}
-			dis.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		html = html.replaceAll("\\s+", " ");
-		Pattern p = Pattern.compile("<title>(.*?)</title>");
-		Matcher m = p.matcher(html);
 		String appStatus = null;
-		while (m.find() == true) {
-			appStatus = m.group(1);
-		}
-		// return t;
-		if (appStatus == null) {
-			items[0] = " Couldn't load status\n -Check network ";
-		} else {
-			
-			if (appStatus.endsWith("(1)")) 
+
+		String json = getJSON();
+		
+        // if something comes back from getJSON()
+		if (json != null) {
+
+			try {
+				jObject = new JSONObject(json);
+				// Getting Array of Contacts
+				openIssues = jObject.getJSONArray("open");
+				// resolvedIssues = jObject.getJSONArray("resolved");
+
+				if (openIssues.length() == 0) {
+					appStatus = "Openshift Status: (OK)";
+				} else {
+					appStatus = "Openshift Status: (" + openIssues.length()
+							+ ")";
+				}
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+            
+			// Grammar fix
+			if (appStatus.endsWith("(1)"))
 				appStatus = appStatus + " Issue";
 			else if (!appStatus.endsWith("(OK)"))
 				appStatus = appStatus + " Issues";
-			
+           
 			items[0] = " " + appStatus;
+		} else {
+
+			items[0] = " Couldn't load status\n -Check network ";
+
 		}
 	}
-
 }
