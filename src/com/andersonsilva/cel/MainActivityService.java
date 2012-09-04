@@ -14,13 +14,13 @@ import org.json.JSONObject;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class MainActivityService extends IntentService {
@@ -102,24 +102,48 @@ public class MainActivityService extends IntentService {
 			results = " Couldn't load status\n -Check network ";
 
 		}
+
 		Context context = getApplicationContext();
+		Intent notificationIntent = new Intent(context, MainActivityWeb.class);
+		notificationIntent.setData(Uri.parse(MainActivity.go_url));
+
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+				notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+		// Resources res = ctx.getResources();
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context);
+
+		builder.setContentIntent(contentIntent)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setWhen(System.currentTimeMillis()).setAutoCancel(true)
+				.setContentTitle(results).setContentText("See Details");
+
 		myNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
+		// nm.notify(NOTIFICATION_ID, n);
 
-		notificationIntent.setData(Uri.parse(MainActivity.go_url));
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-				notificationIntent, 0);
-		Notification notification = new Notification(R.drawable.ic_launcher,
-				results, System.currentTimeMillis());
-		notification.setLatestEventInfo(context, results, "See Details",
-				contentIntent);
+		// myNotificationManager = (NotificationManager) context
+		// .getSystemService(Context.NOTIFICATION_SERVICE);
+
+		// Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
+
+		// notificationIntent.setData(Uri.parse(MainActivity.go_url));
+		// PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+		// notificationIntent, 0);
+		// Notification notification = new Notification(R.drawable.ic_launcher,
+		// results, System.currentTimeMillis());
+		// notification.setLatestEventInfo(context, results, "See Details",
+		// contentIntent);
 
 		if (!results.endsWith("(OK)")) {
 
-			notification.flags |= Notification.FLAG_AUTO_CANCEL;
-			myNotificationManager.notify(NOTIFICATION_ID, notification);
+			// notification.flags |= Notification.FLAG_AUTO_CANCEL;
+			// myNotificationManager.notify(NOTIFICATION_ID, notification);
+
+			myNotificationManager.notify(NOTIFICATION_ID,
+					builder.getNotification());
 
 			Log.i(getClass().getSimpleName(), "Openshift Status Notified");
 		}

@@ -5,8 +5,14 @@ my personal playground for android programming
 It is my attempt to provide useful information about Red Hat's Openshift with this app. Yet this  project is not associated with Red Hat or
 Openshift at all.
 
- master branch (current version, v1.4)
+master branch (current version, v1.4.2)
+- updated the notification class, so it doesn't use deprecated stuff
+- clicking on a notification will now take you to the built-in CEL browser, instead of opening up the stock device browser.
 
+(v1.4.1)
+- make sure notification only comes up if there is an open issue on Openshift. No notification for network connectivity on the device.
+
+(v1.4)
 - app now supports alarm manager and checks against Openshift status API once an hour. It only alerts if there is an open issue.
 
 v1.5 branch
