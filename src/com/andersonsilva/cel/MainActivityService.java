@@ -67,6 +67,7 @@ public class MainActivityService extends IntentService {
 		}
 
 		String appStatus = null;
+		int appStatusInt = 0;
 		String json = getJSON();
 		String results = "";
 
@@ -81,9 +82,11 @@ public class MainActivityService extends IntentService {
 
 				if (openIssues.length() == 0) {
 					appStatus = "Openshift Status: (OK)";
+					appStatusInt = 0;
 				} else {
 					appStatus = "Openshift Status: (" + openIssues.length()
 							+ ")";
+					appStatusInt = 1;
 				}
 
 			} catch (JSONException e) {
@@ -122,25 +125,7 @@ public class MainActivityService extends IntentService {
 		myNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		// nm.notify(NOTIFICATION_ID, n);
-
-		// myNotificationManager = (NotificationManager) context
-		// .getSystemService(Context.NOTIFICATION_SERVICE);
-
-		// Intent notificationIntent = new Intent(Intent.ACTION_VIEW);
-
-		// notificationIntent.setData(Uri.parse(MainActivity.go_url));
-		// PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-		// notificationIntent, 0);
-		// Notification notification = new Notification(R.drawable.ic_launcher,
-		// results, System.currentTimeMillis());
-		// notification.setLatestEventInfo(context, results, "See Details",
-		// contentIntent);
-
-		if (!results.endsWith("(OK)")) {
-
-			// notification.flags |= Notification.FLAG_AUTO_CANCEL;
-			// myNotificationManager.notify(NOTIFICATION_ID, notification);
+		if (appStatusInt == 1) {
 
 			myNotificationManager.notify(NOTIFICATION_ID,
 					builder.getNotification());
