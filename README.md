@@ -5,7 +5,10 @@ my personal playground for android programming
 It is my attempt to provide useful information about Red Hat's Openshift with this app. Yet this  project is not associated with Red Hat or
 Openshift at all.
 
-master branch (current version, v1.4.2)
+master branch (current version, v1.4.3)
+- When I merged v1.4.2, I deleted the changes from v1.4.1 by accident. This version fixes it all of it.
+
+(v1.4.2)
 - updated the notification class, so it doesn't use deprecated stuff
 - clicking on a notification will now take you to the built-in CEL browser, instead of opening up the stock device browser.
 
