@@ -18,8 +18,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -55,8 +57,18 @@ public class MainActivityService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Log.d("MainActivityService", "Service started");
 
-		int updateFreq = 60; // this needs to be a preference
-		boolean autoUpdateChecked = true;
+		// int updateFreq = 60; // this needs to be a preference
+		// boolean autoUpdateChecked = true;
+		Context context = getApplicationContext();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		int updateFreq = Integer.parseInt(prefs.getString(
+				PreferencesActivity.PREF_UPDATE_FREQ, "60"));
+
+		Log.d("MainActivityService", "updateFreq: " + updateFreq);
+		boolean autoUpdateChecked = prefs.getBoolean(
+				PreferencesActivity.PREF_AUTO_UPDATE, false);
 
 		if (autoUpdateChecked) {
 			int alarmType = AlarmManager.ELAPSED_REALTIME_WAKEUP;
@@ -64,7 +76,8 @@ public class MainActivityService extends IntentService {
 					* 60 * 1000;
 			alarmManager.setInexactRepeating(alarmType, timeToRefresh,
 					updateFreq * 60 * 1000, alarmIntent);
-		}
+		} else
+			alarmManager.cancel(alarmIntent);
 
 		String appStatus = null;
 		int appStatusInt = 0;
@@ -106,7 +119,6 @@ public class MainActivityService extends IntentService {
 
 		}
 
-		Context context = getApplicationContext();
 		Intent notificationIntent = new Intent(context, MainActivityWeb.class);
 		notificationIntent.setData(Uri.parse(MainActivity.go_url));
 

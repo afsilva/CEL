@@ -2,5 +2,8 @@
 
     <string name="app_name">Cloud Engine Light</string>
     <string name="title_activity_main">Cloud Engine Light</string>
-    
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_update">Refresh Status</string>
+    <string name="auto_update_prompt">Auto Update?</string>
+    <string name="update_freq_prompt">Update Frequency</string>
 </resources>

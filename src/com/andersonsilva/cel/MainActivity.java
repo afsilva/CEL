@@ -1,11 +1,16 @@
 package com.andersonsilva.cel;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -100,6 +105,66 @@ public class MainActivity extends Activity {
 		} else {
 			v.setBackgroundColor(Color.rgb(99, 00, 00));
 		}
+	}
+
+	// this is the method that checks against Cloud service URL
+	// and strips the TITLE tag.
+	public void checkCloudLight() {
+		startService(new Intent(this, MainActivityService.class));
+	}
+
+	static final private int MENU_PREFERENCES = Menu.FIRST + 1;
+	// static final private int MENU_UPDATE = Menu.FIRST+2;
+	private static final int SHOW_PREFERENCES = 1;
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+
+		menu.add(0, MENU_PREFERENCES, Menu.NONE, R.string.menu_preferences);
+
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+
+		case (MENU_PREFERENCES): {
+			// Class<? extends PreferenceActivity> c = Build.VERSION.SDK_INT <
+			// Build.VERSION_CODES.HONEYCOMB ? PreferencesActivity.class
+			// : FragmentPreferences.class;
+			Intent i = new Intent(this, PreferencesActivity.class);
+
+			startActivityForResult(i, SHOW_PREFERENCES);
+			return true;
+		}
+		}
+		return false;
+	}
+
+	public boolean autoUpdateChecked = false;
+	public int updateFreq = 0;
+
+	private void updateFromPreferences() {
+		Context context = getApplicationContext();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		updateFreq = Integer.parseInt(prefs.getString(
+				PreferencesActivity.PREF_UPDATE_FREQ, "2"));
+
+		autoUpdateChecked = prefs.getBoolean(
+				PreferencesActivity.PREF_AUTO_UPDATE, true);
+	}
+
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == SHOW_PREFERENCES)
+			updateFromPreferences();
+
+		checkCloudLight();
 	}
 
 }
