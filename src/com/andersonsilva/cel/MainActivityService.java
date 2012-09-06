@@ -57,8 +57,6 @@ public class MainActivityService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		Log.d("MainActivityService", "Service started");
 
-		// int updateFreq = 60; // this needs to be a preference
-		// boolean autoUpdateChecked = true;
 		Context context = getApplicationContext();
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
@@ -137,12 +135,15 @@ public class MainActivityService extends IntentService {
 		myNotificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
+		// only show notification if there is an open issue
 		if (appStatusInt == 1) {
 
 			myNotificationManager.notify(NOTIFICATION_ID,
 					builder.getNotification());
 
 			Log.i(getClass().getSimpleName(), "Openshift Status Notified");
+		} else {
+			myNotificationManager.cancel(NOTIFICATION_ID);
 		}
 
 		Intent broadcastIntent = new Intent();

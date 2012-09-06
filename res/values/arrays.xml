@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="update_freq_options">
-        <item>15 minute</item>
+        <item>15 minutes</item>
         <item>30 minutes</item>
         <item>Every Hour</item>
         <item>Every 2 Hours</item>

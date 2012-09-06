@@ -5,7 +5,10 @@ my personal playground for android programming
 It is my attempt to provide useful information about Red Hat's Openshift with this app. Yet this  project is not associated with Red Hat or
 Openshift at all.
 
-master branch (current version, v1.5)
+master branch (current version, v1.5.1)
+- if Openshift status recovers, it will cancel the notification.
+
+(v1.5)
 - w00t! I now have preferences working on the app. You can now turn auto check on and off, and set the frequency of checks against the Openshift status server.
 
 (v1.4.3)
