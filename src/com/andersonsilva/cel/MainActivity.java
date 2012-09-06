@@ -38,12 +38,12 @@ public class MainActivity extends Activity {
 	public static ListView lv = null;
 
 	public static String go_url = "https://openshift.redhat.com/app/status";
-	// public static String status_url =
-	// "https://openshift.redhat.com/app/status/status.json";
+	public static String status_url =
+	 "https://openshift.redhat.com/app/status/status.json";
 	private MainActivityReceiver receiver;
 
 	// Test URL
-	public static String status_url = "https://people.redhat.com/~ansilva/status.json";
+	//public static String status_url = "https://people.redhat.com/~ansilva/status.json";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
