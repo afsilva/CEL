@@ -10,7 +10,7 @@
   <ListPreference
    android:key="PREF_UPDATE_FREQ"
    android:title="Refresh frequency"
-   android:summary="Frequency at which to Openshift status"
+   android:summary="Frequency at which to contact Openshift status"
    android:entries="@array/update_freq_options"
    android:entryValues="@array/update_freq_values"
    android:dialogTitle="Refresh frequency"

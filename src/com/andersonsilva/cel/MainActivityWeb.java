@@ -22,11 +22,14 @@ public class MainActivityWeb extends Activity {
 		viewer.setWebViewClient(new MyWebViewClient());
 		viewer.getSettings().setJavaScriptEnabled(true);
 		viewer.getSettings().setDomStorageEnabled(true);
+		viewer.clearCache(true);
+		viewer.clearHistory();
+		viewer.clearView();
 		viewer.loadUrl(content);
 	}
 
 	public class MyWebViewClient extends WebViewClient {
-		
+
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (url.endsWith(".mp4")) {
