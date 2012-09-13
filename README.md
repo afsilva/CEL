@@ -5,7 +5,10 @@ my personal playground for android programming
 It is my attempt to provide useful information about Red Hat's Openshift with this app. Yet this  project is not associated with Red Hat or
 Openshift at all.
 
-master branch (current version, v1.5.2)
+master branch (current version, v1.5.3)
+- changed all external links to use ACTION_VIEW instead of Webview class.
+
+(v1.5.2)
 - fix preferences wording
 - try to maintain smaller cache for webview
 

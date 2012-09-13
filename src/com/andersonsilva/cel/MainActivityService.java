@@ -117,8 +117,8 @@ public class MainActivityService extends IntentService {
 
 		}
 
-		Intent notificationIntent = new Intent(context, MainActivityWeb.class);
-		notificationIntent.setData(Uri.parse(MainActivity.go_url));
+		Intent notificationIntent = new Intent(Intent.ACTION_VIEW,
+				Uri.parse(MainActivity.go_url));
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
 				notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);

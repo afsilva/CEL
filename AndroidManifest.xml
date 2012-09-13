@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andersonsilva.cel"
-    android:versionCode="17"
-    android:versionName="1.5.2" >
+    android:versionCode="18"
+    android:versionName="1.5.3" >
 
     <uses-sdk
         android:minSdkVersion="9"
@@ -26,9 +26,7 @@
             android:name=".PreferencesActivity"
             android:label="Cloud Engine Light Preferences" >
         </activity>
-        <activity
-            android:name="MainActivityWeb"
-            android:label="C.E.L. Viewer" />
+
         <activity android:name=".FragmentPreferences" />
 
         <service

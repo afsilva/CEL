@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 	public static String[] links = { "", "", "https://openshift.redhat.com/",
 			"http://openshift.redhat.com/community", "",
 			"https://mobile.twitter.com/openshift/",
-			"https://mobile.twitter.com/search/%23openshift",
+			"https://mobile.twitter.com/search/openshift",
 			"https://mobile.twitter.com/openshift_ops",
 			"https://plus.google.com/108052331678796731786/posts",
 			"http://www.facebook.com/openshift" };
@@ -71,9 +71,8 @@ public class MainActivity extends Activity {
 						// on item[] array
 						content = links[position];
 					}
-					Intent showContent = new Intent(getApplicationContext(),
-							MainActivityWeb.class);
-					showContent.setData(Uri.parse(content));
+					Intent showContent = new Intent(Intent.ACTION_VIEW, Uri
+							.parse(content));
 					startActivity(showContent);
 				}
 			}
